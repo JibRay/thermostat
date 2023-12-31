@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Thermostat</title>
+	</head>
+	<body>
+		<form action="./lighton">
+			<input type="submit" value="Light On">
+		</form>
+		<form action="./lightoff">
+			<input type="submit" value="Light Off" />
+		</form>
+		<p>LED is {state}</p>
+		<p>Temperature is {temperature}</p>
+
+		<table width = "100% border = "0">
+			<tr>
+				<td colspan = "3" bgcolor = "#b5dcb3">
+				       <h1 style="font-size: 4em;" align = "center">Thermostat</h1>
+			       </td>
+			</tr>
+			<tr>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" align = "right"></h1>
+				</td>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" align = "center">68&deg</h1>
+				</td>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" ></h1>
+				</td>
+			</tr>
+			<tr>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" align = "right">&lt</h1>
+				</td>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" align = "center">70&deg</h1>
+				</td>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" >&gt</h1>
+				</td>
+			</tr>
+			<tr>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" ></h1>
+				</td>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" align = "center">50&#37</h1>
+				</td>
+				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
+					<h1 style="font-size: 6em;" ></h1>
+				</td>
+			</tr>
+		</table>
+	</body>
+</html>
