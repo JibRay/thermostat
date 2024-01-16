@@ -27,13 +27,13 @@ def connect():
 def open_socket(ip):
     address = (ip, 80)
     connection = socket.socket()
-    connection.settimeout(1.0)
+    connection.settimeout(0.1)
     connection.bind(address)
     connection.listen(1)
     print(connection)
     return connection
 
-def web_page(temperature, state):
+def web_page(temperature, led_state):
     # template HTML
     html = f"""
     <!DOCTYPE html>
@@ -49,7 +49,7 @@ def web_page(temperature, state):
             <form action="./lightoff">
                 <input type="submit" value="Light Off" />
             </form>
-            <p>LED is {state}</p>
+            <p>LED is {led_state}</p>
             <p>Temperature is {temperature}</p>
             <table width = "100% border = "0">
 			<tr>
@@ -62,7 +62,8 @@ def web_page(temperature, state):
 					<h1 style="font-size: 6em;" align = "right"></h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "center">68&deg</h1>
+					<h1 style="font-size: 6em;" align = "center">{temperature}&deg</h1>
+					<h1 style="font-size: 3em;" align = "center">Temperature</h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
 					<h1 style="font-size: 6em;" ></h1>
@@ -74,6 +75,7 @@ def web_page(temperature, state):
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
 					<h1 style="font-size: 6em;" align = "center">70&deg</h1>
+					<h1 style="font-size: 3em;" align = "center">Setting</h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
 					<h1 style="font-size: 6em;" >&gt</h1>
@@ -85,6 +87,7 @@ def web_page(temperature, state):
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
 					<h1 style="font-size: 6em;" align = "center">50&#37</h1>
+					<h1 style="font-size: 3em;" align = "center">Humidity</h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
 					<h1 style="font-size: 6em;" ></h1>
@@ -96,15 +99,19 @@ def web_page(temperature, state):
     """
     return str(html)
 
+# Serve web page. This function does not return. If there is an unhandled
+# exception, the program will reset.
 def serve(connection):
-    state = 'OFF'
+    led_state = 'OFF'
     pico_led.off()
     temperature = 0
     while True:
         try:
             client = connection.accept()[0]
-        # except:
         except:
+            # The socket timed out in this implementation does not appear
+            # to be working. This is the only exception expected at this
+            # point.
             pass
         else:
             print(client)
@@ -117,15 +124,16 @@ def serve(connection):
                 pass
             if request == '/lighton?':
                 pico_led.on()
-                state = 'ON'
+                led_state = 'ON'
             elif request == '/lightoff?':
                 pico_led.off()
-                state = 'OFF'
+                led_state = 'OFF'
             temperature = pico_temp_sensor.temp
-            html = web_page(temperature, state)
+            html = web_page(int((temperature * 1.8) + 32.0), led_state)
             client.send(html)
             client.close()
 
+# Connect to WiFi and serve web page.
 try:
     ip = connect()
     connection = open_socket(ip)

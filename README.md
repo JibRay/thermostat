@@ -10,14 +10,15 @@ valve is controlled by a relay.
 ## Setup
 See https://projects.raspberrypi.org/en/projects/get-started-pico-w/1
 
-1. Download micro-python run-time.
+1. Download micro-python run-time (RPI_PICO_W*.uf2).
 2. Use BOOTSEL button to mount board at /media/<user-name>.
 3. copy run-time file to board. Board will un-mount automatically.
 4. Install thonny.
 5. Install rshell and test REPL with the following code:
-     `from machine import Pin`
-     `led = Pin("LED", Pin.OUT)`
-     `led.toggle`
+     `import machine`
+     `led = machine.Pin("LED", machime.Pin.OUT)`
+     `led.on()`
+     `led.off()`
  Use ctrl-x to exit rshell.
 5. Install ampy (pip3 install adafruit-ampy).
 6. Find the name of the Pico serial port. Board I am using is at
@@ -26,14 +27,23 @@ See https://projects.raspberrypi.org/en/projects/get-started-pico-w/1
 I prefer to use nvim for editing and rshell/ampy to run. The thonny IDE does
 all this.
 
-Ampy key commands: ampy --port <port-path> put <python-file-path>
-                   ampy --port <port-path> run -n <python-file-name>
+Ampy key commands: ampy --port <port-path> put <python-file-path>; ampy
+--port <port-path> run -n <python-file-name>.
 The '-n' causes ampy to disconnect after starting the program. This is
 required otherwise ampy times-out waiting for program to end. Use the
 following screen command to get program output:
 
 screen /dev/ttyACM0 115200
 
+SHT30 connections:
+SHT30  Pico W
+------+-------
+RED    pin 36 +3.3 volts
+BLK    pin 3  ground
+YEL    pin 2  I2C clock
+WHT    pin 1  I2C data
+
+See README.md in micropython-sht30 for instructions how to test SHT30.
 
 ## Code
 Started out with gettingStarted.py. This is code from Raspberry Pi
