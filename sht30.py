@@ -1,4 +1,4 @@
-from machine import I2C, Pin
+from machine import SoftI2C, Pin
 import time
 
 __version__ = '0.2.1'
@@ -6,8 +6,8 @@ __author__ = 'Roberto Sánchez'
 __license__ = "Apache License 2.0. https://www.apache.org/licenses/LICENSE-2.0"
 
 # Jib:
-# Modified this to work specifically to work with SHT30 I have. Looks like
-# there may have been changes to I2C in micropython since this was written.
+# Modified this specifically to work with SHT30 device I have. In micropython
+# only the software implementation of i2c supports start() and stop().
 
 # I2C address
 DEFAULT_I2C_ADDRESS = 0x44
@@ -40,9 +40,8 @@ class SHT30:
     ENABLE_HEATER_CMD = b'\x30\x6D'
     DISABLE_HEATER_CMD = b'\x30\x66'
 
-    def __init__(self, id=0, delta_temp = 0, delta_hum = 0, i2c_address=DEFAULT_I2C_ADDRESS):
-        # Jib: added id=0 to the I2C constructor
-        self.i2c = I2C(id=id)
+    def __init__(self, delta_temp = 0, delta_hum = 0, i2c_address=DEFAULT_I2C_ADDRESS):
+        self.i2c = SoftI2C(scl = 5, sda = 4)
         self.i2c_addr = i2c_address
         self.set_delta(delta_temp, delta_hum)
         time.sleep_ms(50)

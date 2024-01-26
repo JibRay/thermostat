@@ -35,13 +35,18 @@ following screen command to get program output:
 
 screen /dev/ttyACM0 115200
 
-SHT30 connections:
+SHT30 connections (Raspberry Pi Pico W I2C ID 0):
 SHT30  Pico W
 ------+-------
 RED    pin 36 +3.3 volts
-BLK    pin 3  ground
-YEL    pin 2  I2C clock
-WHT    pin 1  I2C data
+BLK    pin 38  ground
+YEL    pin 7  I2C clock
+WHT    pin 6  I2C data
+
+SHT30 device may have i2c address 0x44 or 0x45. To check this using rshell repl:
+`from machine import I2C`
+`i2c = I2C(id=0)`
+`i2c.scan()`
 
 See README.md in micropython-sht30 for instructions how to test SHT30.
 
