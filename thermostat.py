@@ -5,13 +5,14 @@
 import network
 import socket
 from time import sleep
-from picozero import pico_temp_sensor, pico_led
 import machine
 
 # WiFi credentials
 ssid = 'TP-Link_E787'
 password = '35858164'
 # ip = None
+
+pico_led = machine.Pin("LED", machine.Pin.OUT)
 
 def connect():
     wlan = network.WLAN(network.STA_IF)
@@ -104,7 +105,7 @@ def web_page(temperature, led_state):
 def serve(connection):
     led_state = 'OFF'
     pico_led.off()
-    temperature = 0
+    temperature = 60
     while True:
         try:
             client = connection.accept()[0]
@@ -128,7 +129,6 @@ def serve(connection):
             elif request == '/lightoff?':
                 pico_led.off()
                 led_state = 'OFF'
-            temperature = pico_temp_sensor.temp
             html = web_page(int((temperature * 1.8) + 32.0), led_state)
             client.send(html)
             client.close()
