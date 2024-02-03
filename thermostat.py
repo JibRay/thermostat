@@ -35,9 +35,10 @@ def open_socket(ip):
     print(connection)
     return connection
 
+def round(x):
+    return int(x + 0.5)
+
 def web_page(temperature, humidity):
-    t = int((temperature * 1.8) + 32.0)
-    rh = int(humidity)
 
     # template HTML
     html = f"""
@@ -45,6 +46,7 @@ def web_page(temperature, humidity):
     <html lang="en">
         <head>
             <meta charset="UTF-8">
+            <meta http-equiv="refresh" content="5"/>
             <title>Thermostat</title>
         </head>
         <body>
@@ -59,7 +61,7 @@ def web_page(temperature, humidity):
 					<h1 style="font-size: 6em;" align = "right"></h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "center">50&deg</h1>
+					<h1 style="font-size: 6em;" align = "center">{temperature}&deg</h1>
 					<h1 style="font-size: 3em;" align = "center">Temperature</h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
@@ -83,7 +85,7 @@ def web_page(temperature, humidity):
 					<h1 style="font-size: 6em;" ></h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "center">70&#37</h1>
+					<h1 style="font-size: 6em;" align = "center">{humidity}&#37</h1>
 					<h1 style="font-size: 3em;" align = "center">Humidity</h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
@@ -119,7 +121,7 @@ def serve(connection):
             led_state = 'OFF'
         temperature, humidity = sensor.measure()
         print('Temperature:', temperature, 'ºC, RH:', humidity, '%')
-        html = web_page(int((temperature * 1.8) + 32.0), int(humidity))
+        html = web_page(round((temperature * 1.8) + 32.0), round(humidity))
         client.send(html)
         client.close()
 
