@@ -38,7 +38,13 @@ def open_socket(ip):
 def round(x):
     return int(x + 0.5)
 
-def web_page(temperature, humidity):
+
+#            <meta http-equiv="refresh" content="5"/>
+#            <meta http-equiv='cache-control' content='no-cache'>
+#            <meta http-equiv='expires' content='0'>
+#            <meta http-equiv='pragma' content='no-cache'>
+
+def web_page(temperature, humidity, setting):
 
     # template HTML
     html = f"""
@@ -46,7 +52,6 @@ def web_page(temperature, humidity):
     <html lang="en">
         <head>
             <meta charset="UTF-8">
-            <meta http-equiv="refresh" content="5"/>
             <title>Thermostat</title>
         </head>
         <body>
@@ -70,14 +75,18 @@ def web_page(temperature, humidity):
 			</tr>
 			<tr>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "right">&lt</h1>
+                    <form action="./decrease">
+                        <input style="font-size: 6em;" type="submit" value="&lt">
+                    </form>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "center">60&deg</h1>
+					<h1 style="font-size: 6em;" align = "center">{setting}&deg</h1>
 					<h1 style="font-size: 3em;" align = "center">Setting</h1>
 				</td>
 				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" >&gt</h1>
+                    <form action="./increase">
+                        <input style="font-size: 6em;" type="submit" value="&gt">
+                    </form>
 				</td>
 			</tr>
 			<tr>
@@ -93,6 +102,11 @@ def web_page(temperature, humidity):
 				</td>
 			</tr>
             </table>
+            <div align="center">
+                <form action="./refresh">
+                    <input style="font-size: 6em;" type="submit" value="Refresh">
+                </form>
+            </div>
         </body>
     </html>
     """
@@ -101,6 +115,7 @@ def web_page(temperature, humidity):
 # Serve web page. This function does not return. If there is an unhandled
 # exception, the program will reset.
 def serve(connection):
+    setting = 60
     led_state = 'OFF'
     pico_led.off()
     while True:
@@ -110,18 +125,20 @@ def serve(connection):
         request = str(request)
         try:
             request = request.split()[1]
-            print(request)
+            print('request:', request)
         except IndexError:
             pass
-        if request == '/lighton?':
-            pico_led.on()
-            led_state = 'ON'
-        elif request == '/lightoff?':
-            pico_led.off()
-            led_state = 'OFF'
+        if request == '/decrease?':
+            setting -= 1
+            if setting < 50:
+                setting = 50
+        elif request == '/increase?':
+            setting += 1
+            if setting > 80:
+                setting = 80
         temperature, humidity = sensor.measure()
         print('Temperature:', temperature, 'ºC, RH:', humidity, '%')
-        html = web_page(round((temperature * 1.8) + 32.0), round(humidity))
+        html = web_page(round((temperature * 1.8) + 32.0), round(humidity), setting)
         client.send(html)
         client.close()
 
