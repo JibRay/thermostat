@@ -55,53 +55,55 @@ def web_page(temperature, humidity, setting):
             <title>Thermostat</title>
         </head>
         <body>
-            <table width = "100% border = "0">
-			<tr>
-				<td colspan = "3" bgcolor = "#b5dcb3">
-				       <h1 style="font-size: 4em;" align = "center">Thermostat</h1>
-			       </td>
-			</tr>
-			<tr>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "right"></h1>
-				</td>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "center">{temperature}&deg</h1>
-					<h1 style="font-size: 3em;" align = "center">Temperature</h1>
-				</td>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" ></h1>
-				</td>
-			</tr>
-			<tr>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-                    <form action="./decrease">
-                        <input style="font-size: 6em;" type="submit" value="&lt">
-                    </form>
-				</td>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "center">{setting}&deg</h1>
-					<h1 style="font-size: 3em;" align = "center">Setting</h1>
-				</td>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-                    <form action="./increase">
-                        <input style="font-size: 6em;" type="submit" value="&gt">
-                    </form>
-				</td>
-			</tr>
-			<tr>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" ></h1>
-				</td>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" align = "center">{humidity}&#37</h1>
-					<h1 style="font-size: 3em;" align = "center">Humidity</h1>
-				</td>
-				<td bgcolor = "#eeeeee" valign = "top" width = "33%">
-					<h1 style="font-size: 6em;" ></h1>
-				</td>
-			</tr>
-            </table>
+            <div align="center">
+                <table width = "100% border = "0">
+                <tr>
+                    <td colspan = "3" bgcolor = "#b5dcb3">
+                           <h1 style="font-size: 4em;" align = "center">Thermostat</h1>
+                       </td>
+                </tr>
+                <tr>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <h1 style="font-size: 6em;" align = "right"></h1>
+                    </td>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <h1 style="font-size: 6em;" align = "center">{temperature}&deg</h1>
+                        <h1 style="font-size: 3em;" align = "center">Temperature</h1>
+                    </td>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <h1 style="font-size: 6em;" ></h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <form align="right" action="./decrease">
+                            <input style="font-size: 6em;" type="submit" value="&lt">
+                        </form>
+                    </td>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <h1 style="font-size: 6em;" align = "center">{setting}&deg</h1>
+                        <h1 style="font-size: 3em;" align = "center">Setting</h1>
+                    </td>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <form action="./increase">
+                            <input style="font-size: 6em;" type="submit" value="&gt">
+                        </form>
+                    </td>
+                </tr>
+                <tr>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <h1 style="font-size: 6em;" ></h1>
+                    </td>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <h1 style="font-size: 6em;" align = "center">{humidity}&#37</h1>
+                        <h1 style="font-size: 3em;" align = "center">Humidity</h1>
+                    </td>
+                    <td bgcolor = "#eeeeee" valign = "top" width = "33%">
+                        <h1 style="font-size: 6em;" ></h1>
+                    </td>
+                </tr>
+                </table>
+            </div>
             <div align="center">
                 <form action="./refresh">
                     <input style="font-size: 6em;" type="submit" value="Refresh">
